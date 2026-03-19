@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTDMapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="katachi.spring.exercise.repository.UserInfosMapper">
+
+	<insert id="regist">
+		INSERT INTO user_infos(
+			user_id
+			,full_name
+			,zip_code
+			,country
+			,pref
+			,city
+			,town
+			,tel
+		)
+		VALUES(
+			#{userId}
+			,#{fullName}
+			,#{zipCode}
+			,#{country}
+			,#{pref}
+			,#{city}
+			,#{town}
+			,#{tel}
+		)
+	</insert>
+	
+	<select id="getInfo" resultType="UserInfos">
+		SELECT
+			*
+		FROM
+			user_infos
+		WHERE
+			user_id = #{userId}
+	</select>
+	
+	<update id="update">
+		UPDATE
+			user_infos
+		SET
+			user_id = #{userId}
+			,full_name = #{fullName}
+			,zip_code = #{zipCode}
+			,country = #{country}
+			,pref = #{pref}
+			,city = #{city}
+			,town = #{town}
+			,tel = #{tel}
+		WHERE
+			user_id = #{userId}
+	</update>
+	
+	<select id="count">
+		SELECT
+			count(id)
+		FROM
+			user_infos
+		WHERE
+			user_id =#{userId}
+	</select>
+	
+</mapper>
+

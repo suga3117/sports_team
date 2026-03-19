@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTDMapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="katachi.spring.exercise.repository.TeamNewsMapper">
+
+	<select id="countAll" resultType="int">
+		SELECT
+			count(id)
+		FROM
+			team_news
+		WHERE
+			id
+	</select>
+	
+	<select id="getAll" resultType="TeamNews">
+		SELECT
+			id
+			,posting_date
+			,title
+			,article
+		FROM
+			team_news
+		ORDER BY 
+			posting_date DESC, id DESC
+		LIMIT
+			10
+		OFFSET
+			#{offset}
+	</select>
+	
+	<select id="getOne" resultType="TeamNews">
+		SELECT
+			id
+			,posting_date
+			,title
+			,article
+		FROM
+			team_news
+		WHERE
+			id = #{id}
+	</select>
+	
+
+</mapper>

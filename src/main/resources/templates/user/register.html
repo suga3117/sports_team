@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+<head>
+	<meta charset="UTF-8">
+	<title th:text="#{register}"></title>
+	
+</head>
+<body>	
+	<div layout:fragment="content">
+		<form method="post" th:action="@{/register}" th:object="${registUsersForm}">
+			
+			<table class="table text-center mt-3">
+				
+				<tr class="text-left">
+					<td colspan="2"><h3 th:text="#{newRegister}"></h3></td>
+				</tr>
+
+				<tr>
+					<td th:text="#{name}"></td>
+					<td><input type="text" th:field="*{name}"class="form-control w-75"><div th:errors="*{name}" class="text-danger"></div></td>
+				</tr>
+
+				<tr>
+					<td th:text="#{email}"></td>
+					<td><input type="text" th:field="*{email}"class="form-control w-75"><div th:errors="*{email}" class="text-danger"></div>
+						<div th:text="${existEmail}" class="text-danger"></div>
+					</td>
+				</tr>
+				
+				<tr>
+					<td><samp th:text="#{email}"></samp><p th:text="#{forCheck}"></p></td>
+					<td><input type="text" th:field="*{confirmEmail}"class="form-control w-75"><div th:errors="*{confirmEmail}" class="text-danger"></div></td>
+				</tr>
+
+				<tr>
+					<td th:text="#{password}"></td>
+					<td><input type="password" th:field="*{password}"class="form-control w-75"><div th:errors="*{password}" class="text-danger"></div></td>	
+				</tr>
+			
+				<tr>
+					<td><samp th:text="#{password}"></samp><p th:text="#{forCheck}"></p></td>
+					<td><input type="password" th:field="*{confirmPassword}"class="form-control w-75"><div th:errors="*{confirmPassword}" class="text-danger"></div></td>
+				</tr>
+	
+			</table>
+			
+			<div class="text-center">
+				<input type="submit" value="登録" class="btn btn-primary">
+				<a class="btn btn-primary" th:href="@{/}">トップページ</a>
+			</div>
+
+		</form>
+	</div>
+</body>
+</html>

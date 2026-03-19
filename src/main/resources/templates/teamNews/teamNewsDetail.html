@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+<head>
+	<meta charset="UTF-8">
+	<title th:text="#{teamNewsDetail}"></title>
+</head>
+<body>
+	
+	<div layout:fragment="content">
+		
+		<table class="table text-center mt-3">
+			
+			<thead>
+				<tr>
+					<th th:text="${#dates.format(teamNewsDetail.postingDate, 'yyyy年MM月dd日')}"></th>
+					<th th:text="${teamNewsDetail.title}"></th>
+				</tr>
+			</thead>
+			
+			<tbody>
+				<tr>
+					<td colspan="2" th:text="${teamNewsDetail.article}"></td>
+				</tr>
+			</tbody>
+			
+		</table>
+		
+		<div class="text-center">
+			<a class="btn btn-primary" th:href="@{/teamNews}">戻る</a>
+		</div>
+		
+	</div>
+	
+</body>
+</html>

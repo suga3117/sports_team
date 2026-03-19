@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTDMapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="katachi.spring.exercise.repository.OrdersMapper">
+
+	<resultMap id="orders" type="Orders">
+		<id property="id" column="id"/>
+		<result property="userId" column="user_id"/>
+		<result property="orderDate" column="order_date"/>
+		<result property="sumPrice" column="sum_price"/>
+		<association property="items" resultMap="items"/>
+		<collection property="orderDetailsList" ofType="OrderDetails" resultMap="orderDetails"/>
+	</resultMap>
+
+	<resultMap id="orderDetails" type="OrderDetails">
+		<id property="orderId" column="order_id"/>
+		<result property="num" column="num"/>
+		<result property="size" column="size"/>
+		<association property="items" resultMap="items"/>
+	</resultMap>
+
+	<resultMap id="items" type="Items">
+		<result property="itemName" column="item_name"/>
+		<result property="price" column="price"/>
+		<result property="image" column="image"/>
+	</resultMap>
+
+	<select id="countOrderHistory" resultType="int">
+		SELECT
+			count(id)
+		FROM
+			orders
+		WHERE
+			user_id = #{userId}
+	</select>
+	
+	
+	<select id="getOrderHistory" resultMap="orders">
+		SELECT
+			orders.id
+			,orders.user_id
+			,orders.order_date
+			,orders.sum_price
+			,order_details.num
+			,order_details.size
+			,items.item_name
+			,items.price
+			,items.image
+			
+		FROM (
+		SELECT
+			orders.id
+			,orders.user_id
+			,orders.order_date
+			,orders.sum_price
+		FROM
+			orders
+		WHERE
+			orders.user_id = #{id}
+		ORDER BY
+			orders.id DESC
+		LIMIT
+			10
+		OFFSET
+			#{offset}
+		)
+		AS orders
+			LEFT JOIN
+				order_details
+			ON
+				orders.id = order_details.order_id
+			LEFT JOIN
+				items
+			ON
+				order_details.item_id = items.id
+			ORDER BY
+				orders.id DESC, items.item_name;
+	</select>
+	
+	<insert id="entry" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO orders(
+			user_id
+			,order_date
+			,sum_price
+		)
+		VALUES(
+			#{userId}
+			,SYSDATE()
+			,#{sumPrice}
+		)
+	</insert>
+
+
+</mapper>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+<head>
+	<meta charset="UTF-8">
+	<title th:text="#{shippingInfo}"></title>	
+</head>
+<body>	
+		<div layout:fragment="content">
+		<div class="shippingInfo">
+		<form method="post" th:action="@{/shippingInfo}" th:object="${shippingInfoForm}">
+		
+		<table class="table table-striped text-center mt-3">
+			<tr class="text-left">
+				<td colspan="2"><h2 th:text="#{shippingInfo}"></h2></td>
+			</tr>
+			
+			<tr>
+				<td>
+					<span th:text="#{required}" class="btn-danger"></span>
+					<span th:text="#{fullName}"></span>
+				</td>
+				<td><input type="text" th:field="*{fullName}"class="form-control"><div th:errors="*{fullName}" class="text-danger"></div>	</td>
+			</tr>
+			
+			
+			
+			<tr>
+				<td>
+					<span th:text="#{required}" class="btn-danger"></span>
+					<span th:text="#{zipCode}"></span>
+					<p th:text="#{noHyphen}">
+				</td>
+				<td><input type="text" th:field="*{zipCode}"class="form-control"><div th:errors="*{zipCode}" class="text-danger"></div></td>
+			</tr>
+			
+			<tr>
+				<td>
+					<span th:text="#{required}" class="btn-danger"></span>
+					<span th:text="#{country}"></span>
+				</td>
+				<td><input type="text" th:field="*{country}"class="form-control"><div th:errors="*{country}" class="text-danger"></div></td>
+			</tr>
+			
+			<tr>
+				<td>
+					<span th:text="#{required}" class="btn-danger"></span>
+					<span th:text="#{pref}"></span>
+				</td>
+				<td><input type="text" th:field="*{pref}"class="form-control"><div th:errors="*{pref}" class="text-danger"></div></td>
+			</tr>
+			
+			<tr>
+				<td>
+					<span th:text="#{required}" class="btn-danger"></span>
+					<span th:text="#{city}"></span>
+				</td>
+				<td><input type="text" th:field="*{city}"class="form-control"><div th:errors="*{city}" class="text-danger"></div></td>
+			</tr>
+			
+			<tr>
+				<td>
+					<span th:text="#{town}"></span>
+				</td>
+				<td><input type="text" th:field="*{town}"class="form-control"><div th:errors="*{town}" class="text-danger"></div></td>
+			</tr>
+			
+			<tr>
+				<td>
+					<span th:text="#{required}" class="btn-danger"></span>
+					<span th:text="#{tel}"></span>
+					<p th:text="#{noHyphen}">
+				</td>
+				<td><input type="text" th:field="*{tel}"class="form-control"><div th:errors="*{tel}" class="text-danger"></div></td>
+			</tr>
+			
+			
+			
+			<tr class="text-center">
+				<td colspan="2">
+					<input type="submit" value="登録/変更" class="btn btn-primary">　<a class="btn btn-primary" th:href="@{/myPage}">マイページに戻る</a>
+				</td>
+			</tr>
+		</table>
+		
+		</form>	
+		</div>
+	</div>
+</body>
+</html>

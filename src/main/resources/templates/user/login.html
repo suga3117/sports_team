@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+<head>
+	<meta charset="UTF-8">
+	<title th:text="#{login}"></title>
+</head>
+
+<body>
+	<div layout:fragment="content">
+		<form method="post" th:action="@{/login}" th:object="${loginUsersForm}">
+
+			<div class="text-left">
+				<h3 th:text="#{login}"></h3>
+			</div>
+
+			<table class="table text-center mt-3">
+				<p th:if="${session['SPRING_SECURITY_LAST_EXCEPTION']} != null"
+					th:text="${session['SPRING_SECURITY_LAST_EXCEPTION'].message}" class="text-danger">ログインエラーメッセージ
+				</p>
+
+				<tr>
+					<td th:text="#{email}"></td>
+					<td><input type="text" th:field="*{email}" class="form-control w-75"></td>
+					<div th:errors="*{email}" class="text-danger"></div>
+				</tr>
+
+				<tr>
+					<td th:text="#{password}"></td>
+					<td><input type="password" th:field="*{password}" class="form-control w-75"></td>
+					<div th:errors="*{password}" class="text-danger"></div>
+				</tr>
+
+			</table>
+
+			<div class="text-center">
+				<td><input type="submit" value="ログイン" class="btn btn-primary"></td>
+				<td><a class="btn btn-primary" th:href="@{/}">トップページ</a></td>
+			</div>
+			
+		</form>
+	</div>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+
+<head>
+	<meta charset="UTF-8">
+	<title th:text="#{itemsDetail}"></title>
+</head>
+
+<body>
+
+	<div layout:fragment="content">
+
+		<div class="items-detail">
+			<div class="items-detail-inside">
+
+				<form method="post" th:action="@{/addToCarts}" th:object="${cartsForm}">
+					<img th:src="@{'/images/' + ${item.image}}" th:alt="${item.image}" class="item-detail-image">
+					<p class="item-name" th:text="${'グッズ名：  ' + item.itemName}"></p>
+					<p class="item-price" th:text="${'単価：  ' + item.price + '円'}"></p>
+					
+					<div class="d-flex align-items-start gap-3 w-100">
+						
+						<div th:if="${item.sizeCategory == 0}">
+							<a><select th:field="*{size}" class="form-control"
+									style="width: 290px; margin-right: 10px;">
+									<option value="" selected>サイズを選択して下さい。</option>
+									<option th:value="S">S</option>
+									<option th:value="M">M</option>
+									<option th:value="L">L</option>
+								</select></a>
+							<div th:errors="*{size}" class="text-danger" style="font-size: 20px;"></div>
+							
+						</div>
+						
+						<div th:if="${item.sizeCategory == 1}">
+							<a><select th:field="*{size}" class="form-control"
+									style="width: 290px; margin-right: 10px;">
+									<option value="" selected>サイズを選択して下さい。</option>
+									<option th:value="F">F</option>
+								</select></a>
+							<div th:errors="*{size}" class="text-danger" style="font-size: 20px;"></div>
+						</div>
+
+						<div class="input-group" style="width: 280px;"> <!-- ******ポイント******** -->
+							<span class="input-group-text">個数</span> <!-- ****input-groupと同じ行で右側に表示する事が出来る***** -->
+							<input type="number" th:field="*{num}" class="form-control" placeholder="数量をで入力してください。" min="1" max="99">
+							
+							<div th:errors="*{num}" class="text-danger" style="font-size: 20px;"></div>
+						</div>
+					</div>
+					
+					<div class="item-purchase">
+						<th:block sec:authorize="isAuthenticated()"> 
+							<input input type="submit" value="カゴに追加" class="btn btn-primary" th:classappend="${user == 1} ? ' disabled' : ''">
+						</th:block>
+					
+						<th:block sec:authorize="isAnonymous()">
+							<div class="text-danger mt-2" style="font-size: 20px;">会員のみ購入できます。</div>
+						</th:block>	
+					
+						<a class="btn btn-primary" th:href="@{/items}">戻る</a>
+						<input type="hidden" name="itemId" th:value="${item.id}">
+					</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="text-center">
+		<a class="btn btn-primary" th:href="@{/items}">戻る</a>
+	</div>
+
+	</div>
+
+</body>
+
+</html>

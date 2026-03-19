@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTDMapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="katachi.spring.exercise.repository.UsersMapper">
+
+	<insert id="registUser">
+		INSERT INTO users(
+			name
+			,email
+			,password
+		)
+		VALUES(
+			#{name}
+			,#{email}
+			,#{password}
+		)
+	</insert>
+	
+	<select id="getUser" resultType="Users">
+		SELECT
+			id
+			,name
+			,email
+			,password
+		FROM
+			users
+		WHERE
+			email = #{email}
+	</select>
+	
+	<update id="edit">
+		UPDATE
+			users
+		SET
+			name = #{name}
+			,email = #{email}
+			,password = #{password}
+		WHERE
+			id = #{id}
+	</update>
+	
+	<select id="getUserById" resultType="Users">
+		SELECT
+			id
+			,name
+			,email
+			,password
+		FROM
+			users
+		WHERE
+			id = #{id}
+	</select>
+	
+	<select id="countEmail" resultType="int">
+		SELECT
+			count(id)
+		FROM
+			users
+		WHERE
+			email = #{email}
+	</select>
+
+</mapper>

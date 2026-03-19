@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+<head>
+	<meta charset="UTF-8">
+	<title th:text="#{myPage}"></title>
+</head>
+<body>
+	
+	<div layout:fragment="content">	
+		
+		<h2 th:text="#{myPage}"></h2>
+		
+		<table class="table text-center mt-3">
+			
+			<thead>
+				<tr>
+					<td><h3 th:text="#{loginUserInfo}"></h3></td>
+					<td></td>
+				</tr>
+			</thead>
+			
+			<tbody>
+				<tr>
+					<td th:text="#{name}"></td>
+					<td th:text="${loginInfo.name}"></td>
+				</tr>
+
+				<tr>
+					<td th:text="#{email}"></td>
+					<td th:text="${loginInfo.email}"></td>
+				</tr>
+
+				<tr class="text-right">
+					<td colspan="2"><a class="btn btn-primary" th:href="@{/editLoginUserInfo}">編集</a></td>
+				</tr>
+			</tbody>
+			
+		</table>
+		
+		<table class="userAdress table text-center mt-3">
+			
+			<thead>
+				<tr>
+					<td><h3 th:text="#{address}"></h3></td>
+					<td></td>
+				</tr>
+			</thead>
+			
+			<tbody th:if="${shippingInfo != null}">
+				<tr>
+					<td th:text="#{fullName}"></td>
+					<td th:text="${shippingInfo.fullName}"></td>
+				</tr>
+
+				<tr>
+					<td th:text="#{zipCode}"></td>
+					<td th:text="${shippingInfo.zipCode}"></td>
+				</tr>
+				
+				<tr>
+					<td th:text="#{country}"></td>
+					<td th:text="${shippingInfo.country}"></td>
+				</tr>
+				
+				<tr>
+					<td th:text="#{address}"></td>
+					<td>
+						<p th:if="${shippingInfo.town != null}" th:text="${shippingInfo.pref + shippingInfo.city + shippingInfo.town}"></p>
+						<p th:if="${shippingInfo.town == null}" th:text="${shippingInfo.pref + shippingInfo.city}"></p>
+					</td>
+				</tr>
+				
+				<tr>
+					<td th:text="#{tel}"></td>
+					<td th:text="${shippingInfo.tel}"></td>
+				</tr>
+				
+				<tr>
+					<td colspan="2"><a class="btn btn-primary" th:href="@{/shippingInfo}">編集</a></td>
+				</tr>
+			</tbody>
+			
+			<tbody th:if="${shippingInfo == null}">
+				<tr>
+					<td th:text="#{noAddress}"></td>
+				</tr>
+				
+				<tr>
+					<td><a class="btn btn-primary" th:href="@{/shippingInfo}">編集</a></td>
+				</tr>
+			</tbody>
+			
+		</table>
+		
+		<!-- 購入履歴がない場合 -->
+		<div th:if="${#lists.isEmpty(orderHistoryList)}">
+			<h3 th:text="#{orderHistory}"></h3>
+			<p>購入履歴はありません。</p>
+		</div>
+		
+		<!-- 購入履歴がある場合 -->
+		<div th:unless="${#lists.isEmpty(orderHistoryList)}">
+			<table class="table text-center mt-3">
+				<thead>
+					<tr class="text-left">
+						<th colspan="6">
+							<h3 th:text="#{orderHistory}"></h3>
+						</th>
+					</tr>
+				</thead>
+				<tbody th:each="order : ${orderHistoryList}">
+					<tr class="text-center bg-secondary">
+						<td th:text="${#dates.format(order.orderDate, 'yyyy/MM/dd')}"></td>
+						<td th:text="#{itemName}"></td>
+						<td th:text="#{price}"></td>
+						<td th:text="#{size}"></td>
+						<td th:text="#{num}"></td>
+						<td th:text="#{subTotal}"></td>
+					</tr>
+					<tr th:each="orderDetails : ${order.orderDetailsList}">
+						<td><img class="cartItem-image" th:src="@{'/images/' + ${orderDetails.items.image}}"
+								th:alt="${orderDetails.items.image}"></td>
+						<td th:text="${orderDetails.items.itemName}"></td>
+						<td th:text="${orderDetails.items.price + '円'}"></td>
+						<td th:text="${orderDetails.size}"></td>
+						<td th:text="${orderDetails.num}"></td>
+						<td th:text="${orderDetails.num * orderDetails.items.price + '円'}"></td>
+					</tr>
+					<tr class="sumPrice">
+						<td colspan="6" th:text="${'合計金額:' + order.sumPrice + '円'}"></td>
+					</tr>
+				</tbody>
+			</table>
+
+			<div class="pagination">
+				<ul class="pagination justify-content-center">
+
+					<!-- 前へ -->
+					<li class="page-item" th:classappend="${currentPage == 1} ? 'disabled' : ''">
+						<a class="page-link" th:href="@{'/myPage?page=' + ${currentPage - 1}}">前へ</a>
+					</li>
+
+					<!-- ページ番号 -->
+					<li class="page-item" th:each="i : ${#numbers.sequence(1, totalPages)}" th:classappend="${i == currentPage} ? 'active' : ''">
+						
+						<!-- 現在ページなら span にしてリンクを無効化にする(spanはそのページを押せない) -->
+						<span class="page-link" th:if="${i == currentPage}" th:text="${i}"></span>
+						<!-- その他のページはリンク(aはそのページを押せる) -->
+						<a class="page-link" th:if="${i != currentPage}" th:href="@{'/myPage?page=' + ${i}}" th:text="${i}"></a>
+					</li>
+
+					<!-- 次へ -->
+					<li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled' : ''">
+						<a class="page-link" th:href="@{'/myPage?page=' + ${currentPage + 1}}">次へ</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTDMapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="katachi.spring.exercise.repository.ItemsMapper">
+
+	<select id="countAll" resultType="int">
+		SELECT
+			count(id)
+		FROM
+			items
+		WHERE
+			id
+	</select>
+	
+	<select id="getAll" resultType="Items">
+		SELECT
+			id
+			,item_name
+			,price
+			,image
+			,size_category
+		FROM
+			items
+		ORDER BY 
+			id DESC
+		LIMIT
+			8
+		OFFSET
+			#{offset}
+	</select>
+	
+	<select id="getOne" resultType="Items">
+		SELECT
+			id
+			,item_name
+			,price
+			,image
+			,size_category
+		FROM
+			items
+		WHERE
+			id = #{id}
+	</select>
+	
+	
+	
+</mapper>

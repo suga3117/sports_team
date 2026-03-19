@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+<head>
+	<meta charset="UTF-8">
+	<title th:text="#{itemsMain}"></title>
+</head>
+<body>
+	
+	<div layout:fragment="content">	
+		
+		<div class="basket"><h3 th:text="#{itemsMain}"></h3><a class="btn btn-primary" th:href="@{/basket}">買い物カゴ</a></div>
+		<div th:text="${unexsistItem}" class="text-danger"></div>
+		<div th:each="item : ${itemList}">
+			<div class="items-contents">
+				<div class="each-items-contents"><a class="btn btn-primary" th:href="@{'/itemsDetail/' + ${item.id}}">
+					<img class="item-image" th:src="@{'/images/' + ${item.image}}" th:alt="${item.image}">
+					<p class="item-name" th:text="${item.itemName}"></p>
+					<p class="item-price" th:text="${item.price + '円'}"></p>					
+				</a></div>
+			</div>
+		</div>
+		
+		<div class="pagination">
+			<ul class="pagination justify-content-center">
+				<!-- 前へ -->
+				<li class="page-item" th:classappend="${currentPage == 1} ? 'disabled' : ''">
+					<a class="page-link" th:href="@{'/items?page=' + ${currentPage - 1}}" tabindex="-1">前へ</a>
+				</li>
+
+				<!-- ページ番号 -->
+				<li class="page-item" th:each="i : ${#numbers.sequence(1, totalPages)}"	th:classappend="${i == currentPage} ? 'active' : ''">
+					
+					<!-- 現在ページなら span にしてリンクを無効化にする(spanはそのページを押せない) -->
+					<span class="page-link" th:if="${i == currentPage}" th:text="${i}"></span>
+					<!-- その他のページはリンク(aはそのページを押せる) -->
+					<a class="page-link" th:if="${i != currentPage}" th:href="@{'/items?page=' + ${i}}">[[${i}]]</a>
+				</li>
+
+				<!-- 次へ -->
+				<li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled' : ''">
+					<a class="page-link" th:href="@{'/items?page=' + ${currentPage + 1}}">次へ</a>
+				</li>
+			</ul>
+		</div>
+		
+		
+	</div>
+
+</body>
+</html>

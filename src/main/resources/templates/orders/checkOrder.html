@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+<head>
+	<meta charset="UTF-8">
+	<title th:text="#{checkOrder}"></title>
+</head>
+<body>
+	
+	<div layout:fragment="content">	
+		
+		<form method="post" th:action="@{/completedOrder}" th:object="${cartForm}">
+			<div><h3 th:text="${creatAddress}" class="text-danger"></h3></div>
+			
+			<table class="table text-center table-bordered">
+				
+				<thead>
+					<tr>
+						<td><h3 th:text="#{checkOrder}"></h3></td>
+						<td th:text="#{itemName}"></td>
+						<td th:text="#{price}"></td>
+						<td th:text="#{size}"></td>
+						<td th:text="#{num}"></td>
+						<td th:text="#{subTotal}"></td>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr th:each="carts : ${cartsList}">
+						<td><img class="cartItem-image" th:src="@{'/images/' + ${carts.items.image}}" th:alt="${carts.items.image}"></td>
+						<td th:text="${carts.items.itemName}"></td>
+						<td th:text="${carts.items.price + '円'}"></td>
+						<td th:text="${carts.size}"></td>
+						<td th:text="${carts.num}"></td>
+						<td th:text="${carts.num  * carts.items.price + '円'}"></td>
+						<input type="hidden" name="id" th:value="${carts.id}">
+						<input type="hidden" name="itemId" th:value="${carts.itemId}">
+					</tr>
+				</tbody>
+				
+			</table>
+
+			<div class="sumPrice">
+				<p th:text="${'合計: ' + sumPrice + '円'}"></p>
+				<input type="hidden" name="sumPrice" th:value="${sumPrice}">
+			</div>
+			
+			
+		
+			<table class="userAdress table text-left mt-3">
+			
+				<thead>
+					<tr>
+						<td><h3 th:text="#{address}"></h3></td>
+						<td></td>
+					</tr>
+				</thead>
+			
+				<tbody th:if="${shippingInfo != null}">
+					<tr>
+						<td th:text="#{fullName}"></td>
+						<td th:text="${shippingInfo.fullName}"></td>
+					</tr>
+
+					<tr>
+						<td th:text="#{zipCode}"></td>
+						<td th:text="${shippingInfo.zipCode}"></td>
+					</tr>
+				
+					<tr>
+						<td th:text="#{country}"></td>
+						<td th:text="${shippingInfo.country}"></td>
+					</tr>
+				
+					<tr>
+						<td th:text="#{address}"></td>
+						<td>
+							<p th:if="${shippingInfo.town != null}" th:text="${shippingInfo.pref + shippingInfo.city + shippingInfo.town}"></p>
+							<p th:if="${shippingInfo.town == null}" th:text="${shippingInfo.pref + shippingInfo.city}"></p>
+						</td>
+					</tr>
+				
+					<tr>
+						<td th:text="#{tel}"></td>
+						<td th:text="${shippingInfo.tel}"></td>
+					</tr>
+				
+					<tr>
+						<td colspan="2"><a class="btn btn-primary" th:href="@{/shippingInfo}">編集</a></td>
+					</tr>
+				</tbody>
+			
+				<tbody th:if="${shippingInfo == null}">
+					<tr>
+						<td th:text="#{noAddress}"></td>
+					</tr>
+				
+					<tr>
+						<td><a class="btn btn-primary" th:href="@{/shippingInfo}">登録</a></td>
+					</tr>
+				</tbody>
+			</table>
+			
+			<div class="text-center">
+				<input type="submit" value="注文を確定する" class="btn btn-danger">
+				<a class="btn btn-primary" th:href="@{/items}">戻る</a>
+			</div>
+				
+		</form>
+		
+	</div>
+
+</body>
+</html>

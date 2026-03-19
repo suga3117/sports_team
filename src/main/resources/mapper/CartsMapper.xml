@@ -1,0 +1,97 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTDMapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="katachi.spring.exercise.repository.CartsMapper">
+
+	<resultMap id="carts" type="Carts">
+		<result property="id" column="id"/>
+		<result property="userId" column="user_id"/>
+		<result property="itemId" column="item_id"/>
+		<result property="size" column="size"/>
+		<result property="num" column="num"/>
+		<association property="items" resultMap="items"/>		
+	</resultMap>
+	
+	<resultMap id="items" type="Items">
+		<result property="itemName" column="item_name"/>
+		<result property="description" column="description"/>
+		<result property="price" column="price"/>
+		<result property="image" column="image"/>
+		<result property="sizeCategory" column="size_category"/>
+	</resultMap>
+
+	
+	<insert id="add">
+		INSERT INTO carts(
+			carts.user_id
+			,carts.item_id
+			,carts.size
+			,carts.num
+		)
+		VALUES(
+			#{userId}
+			,#{itemId}
+			,#{size}
+			,#{num}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE
+			carts
+		SET
+			num = #{num}
+			,size = #{size}
+		WHERE
+			id = #{id}
+			AND user_id = #{userId}
+	</update>
+	
+	<select id="find" resultMap="carts">
+		SELECT
+			*
+		FROM
+			carts
+		WHERE
+			user_id = #{userId}
+			AND item_id = #{itemId}
+			AND size = #{size}
+	</select>
+	
+	<select id="cartList" resultMap="carts">
+		SELECT
+			carts.id
+			,carts.user_id
+			,carts.item_id
+			,carts.num
+			,items.item_name
+			,carts.size
+			,items.price
+			,items.image
+		FROM 
+			carts
+		LEFT JOIN
+			items
+		ON
+			carts.item_id = items.id
+		WHERE
+			carts.user_id = #{userId}
+			
+	</select>
+	
+	<delete id="deleteOne">
+		DELETE
+			FROM
+				carts
+		WHERE
+			id = #{id}
+			AND user_id = #{userId}
+	</delete>
+	
+	<delete id="deleteAll">
+		DELETE FROM
+			carts
+		WHERE
+			carts.user_id = #{id}
+	</delete>
+	
+</mapper>

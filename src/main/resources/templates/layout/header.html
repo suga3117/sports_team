@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+</head>
+<body>
+	<nav layout:fragment="header">
+		
+		<div class="header-top">
+			<h3>スポーツチームオフィシャルサイト</h3>
+			<div class="header-top-login">
+				<!-- ログアウト状態 -->
+				<a sec:authorize="isAnonymous()" th:href="@{/login}">ログイン</a>
+				<a sec:authorize="isAnonymous()" th:href="@{/register}" class="button-spacing">新規登録</a>
+			
+				<!-- ログイン状態 -->
+				<div sec:authorize="isAuthenticated()" class="d-flex align-items-center gap-2 justify-content-end">
+					<a  th:href="@{/myPage}"> <span th:text="${loginUserName}">ユーザー名</span> 様</a>
+					<form method="post" th:action="@{/logout}">
+						<input type="submit" value="  ログアウト" class="btn btn-link">
+					</form>
+				</div>
+			</div>
+		</div>
+		
+		<div class="header-text">
+		
+			<div><!-- 共通 -->
+				<a class="btn btn-primary" th:href="@{/}">トップページ</a>
+				<a class="btn btn-primary" th:href="@{/teamNews}">チーム情報</a>
+				<a class="btn btn-primary" th:href="@{/items}">グッズ</a>
+			</div>
+			
+		</div>
+	</nav>
+
+</body>
+</html>
