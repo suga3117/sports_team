@@ -25,11 +25,8 @@
 ・css/BootStrap
 ・MySQL
 
-DB
+〇DB
 ・MySQL
-
-view
-
 ・Thymeleaf,HTML
 ・css/Bootstrap
 
